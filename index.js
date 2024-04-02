@@ -62,16 +62,6 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.get('/users', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.status(200).json(users);
-    } catch (error) {
-        console.error("Error getting users:", error);
-        res.status(500).json({ error: 'Unable to get users' });
-    }
-});
-
 app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
