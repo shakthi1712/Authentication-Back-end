@@ -5,18 +5,20 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const app = express();
-const port = 4000;
-const dburl = "mongodb+srv://shakthi2003:asv1712@shakthi.vwzhdff.mongodb.net/userDB?retryWrites=true&w=majority&appName=shakthi";
+const port = process.env.PORT || 4000;
+const dburl = process.env.MONGODB_URI || "mongodb://localhost:27017/userDB";
 const secret_key = process.env.JWT_SECRET || 'default_secret_key';
 
-mongoose.connect(dburl)
+mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.listen(port, () => { 
+        console.log("Connected to MongoDB");
+        app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });
     })
     .catch((error) => {
-        console.log("Unable to connect to the database:", error.message);
+        console.error("Error connecting to MongoDB:", error.message);
+        process.exit(1); // Exit process with failure
     });
 
 // User Schema
